@@ -3,6 +3,6 @@
 Public, read-only Room 2 layout report.
 
 - Published page: <https://tuantrangprod.github.io/er-room-2-layout/>
-- Contains locked source summary and explicitly selected layout draft reports.
+- **Demo**: draft relationship diagram; not approved.
+- **Draft C01 · I02**: selected measured snapshot with readonly config, layer visibility, calculations and assumptions.
 - Concept design only; not a construction or safety-approved drawing.
-- Report content lives in `room-2-layout-data.js`; `index.html` handles display.

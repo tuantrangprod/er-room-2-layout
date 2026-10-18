@@ -1,13 +1,12 @@
 // Frozen public layout snapshot. HTML only displays this data.
 window.room2Layout = {
-  version: 'v0.1',
-  title: 'Giao Ước Máu: Asylum · Room 2 Layout v0.1',
-  eyebrow: 'Phòng chơi 02 · Tóm tắt layout công khai',
-  heading: ['Hành lang', 'hình số 8.'],
-  subtitle: 'Bốn phòng quanh hai vòng di chuyển; cấu trúc đã duyệt được tách khỏi các kích thước và vị trí cửa chưa chốt.',
+  version: 'v0.2',
+  title: 'Giao Ước Máu: Asylum · Room 2 Layout Demo',
+  eyebrow: 'Phòng chơi 02 · Báo cáo layout công khai',
+  heading: ['Demo:', 'hành lang hình số 8.'],
+  subtitle: 'Minh họa quan hệ bốn phòng quanh hai vòng di chuyển. Toàn bộ sơ đồ này là Draft, chưa được duyệt.',
   statusLegend: {
-    locked: 'Locked · cấu trúc đã duyệt',
-    draft: 'Draft · minh họa hoặc chưa có số đo',
+    draft: 'Draft · chưa được duyệt',
     stable: 'Stable · phép tính nhất quán, không phải phê duyệt'
   },
   labels: {
@@ -19,48 +18,48 @@ window.room2Layout = {
     room: 'Phòng',
     expand: 'Xem chi tiết',
     tabs: 'Chọn nội dung',
-    summaryTab: 'Tóm tắt đã duyệt',
-    measuredTab: 'Bản nháp đo đạc',
-    summaryVersion: 'Bản tóm tắt chỉ xem'
+    summaryTab: 'Demo',
+    measuredTab: 'Draft C01 · I02',
+    summaryVersion: 'Demo · chỉ xem'
   },
   tabs: [
-    { id: 'summary', label: 'Tóm tắt đã duyệt' },
-    { id: 'measured-draft', label: 'Bản nháp đo đạc' }
+    { id: 'demo', label: 'Demo' },
+    { id: 'draft-c01-i02', label: 'Draft C01 · I02' }
   ],
-  notice: 'Đây là sơ đồ ý tưởng công khai, không phải bản vẽ xây dựng. Chưa có kích thước nguồn, bề dày vách, bề rộng thông thủy, hướng mở cửa hoặc kiểm tra thoát hiểm.',
+  notice: 'Demo Draft · không phải layout đã duyệt hoặc bản vẽ xây dựng. Kích thước, vị trí cửa và kiểm tra thoát hiểm chưa được chốt.',
   feature: {
     keyword: 'Sơ đồ',
     brief: '4 phòng; hành lang hình số 8.',
-    status: 'locked',
+    status: 'draft',
     details: [
       'A–B là hai phòng độc lập có đủ bốn vách.',
       'C–D có ba vách và dùng tường giáp phòng GM làm cạnh còn lại.',
-      'Đường màu lam chỉ giải thích quan hệ hình số 8; chưa phải tuyến đi hoặc kích thước đã duyệt.'
+      'Đường màu lam chỉ minh họa quan hệ hình số 8; toàn bộ topology và hình học vẫn là Draft.'
     ]
   },
   plan: {
     rooms: [
-      { id: 'GM', name: 'PHÒNG GM', note: 'chỉ nhân sự', x: 80, y: 35, width: 840, height: 115, kind: 'gm', status: 'locked' },
-      { id: 'C', name: 'PHÒNG C', note: '3 vách · giáp GM', x: 180, y: 150, width: 270, height: 155, kind: 'attached', status: 'locked' },
-      { id: 'D', name: 'PHÒNG D', note: '3 vách · giáp GM', x: 550, y: 150, width: 270, height: 155, kind: 'attached', status: 'locked' },
-      { id: 'A', name: 'PHÒNG A', note: 'độc lập · 4 vách', x: 180, y: 410, width: 270, height: 190, kind: 'freestanding', status: 'locked' },
-      { id: 'B', name: 'PHÒNG B', note: 'độc lập · 4 vách', x: 550, y: 410, width: 270, height: 190, kind: 'freestanding', status: 'locked' }
+      { id: 'GM', name: 'PHÒNG GM', note: 'chỉ nhân sự', x: 80, y: 35, width: 840, height: 115, kind: 'gm', status: 'draft' },
+      { id: 'C', name: 'PHÒNG C', note: '3 vách · giáp GM', x: 180, y: 150, width: 270, height: 155, kind: 'attached', status: 'draft' },
+      { id: 'D', name: 'PHÒNG D', note: '3 vách · giáp GM', x: 550, y: 150, width: 270, height: 155, kind: 'attached', status: 'draft' },
+      { id: 'A', name: 'PHÒNG A', note: 'độc lập · 4 vách', x: 180, y: 410, width: 270, height: 190, kind: 'freestanding', status: 'draft' },
+      { id: 'B', name: 'PHÒNG B', note: 'độc lập · 4 vách', x: 550, y: 410, width: 270, height: 190, kind: 'freestanding', status: 'draft' }
     ],
     playerRoutes: [
       { d: 'M500 650 C100 650 85 355 315 355 C500 355 500 650 500 650', status: 'draft' },
       { d: 'M500 650 C900 650 915 355 685 355 C500 355 500 650 500 650', status: 'draft' }
     ],
     staffAccess: [
-      { from: [315, 80], to: [315, 195], status: 'locked' },
-      { from: [685, 80], to: [685, 195], status: 'locked' }
+      { from: [315, 80], to: [315, 195], status: 'draft' },
+      { from: [685, 80], to: [685, 195], status: 'draft' }
     ]
   },
   measurementDraft: {
-    title: 'Room 2 Layout · Measured Draft v0.2',
-    eyebrow: 'Phòng chơi 02 · Bản nháp đo đạc',
-    heading: ['60 m²:', 'hai vòng, hai phòng.'],
-    subtitle: 'Mặt bằng nội bộ 10,0 × 6,0 m gồm vách ngăn 0,10 m và hành lang thông thủy 0,80 m quanh hai phòng trung tâm.',
-    notice: 'Bản nháp này thay cấu trúc 4 phòng Locked bằng 2 phòng lớn. Đây là phương án so sánh, chưa thay thế layout đã duyệt. Hành lang 0,80 m cần được chuyên gia kiểm tra về thoát hiểm, tiếp cận, sức chứa và vận hành trước khi chốt.',
+    title: 'Room 2 Layout · Draft C01 · I02',
+    eyebrow: 'Phòng chơi 02 · Draft C01 · I02',
+    heading: ['C01 · I02:', 'Opposite reveal.'],
+    subtitle: 'Bản xuất chỉ đọc của iteration C01-I02: 60 m² nội bộ, hai phòng trung tâm, vách 0,10 m và hành lang thông thủy 0,80 m.',
+    notice: 'Draft · chưa được duyệt. Layer toggle chỉ thay đổi phần hiển thị; config, hình học, phép tính và marker không thể chỉnh sửa trên trang công khai.',
     status: 'draft',
     labels: {
       version: 'Bản nháp đo đạc v0.2',
@@ -72,7 +71,47 @@ window.room2Layout = {
       calculations: 'Phép tính',
       assumptions: 'Giả định và giới hạn',
       assumptionKeyword: 'Giả định',
-      assumptionBrief: '4 điều đang dùng để tính.'
+      assumptionBrief: '4 điều đang dùng để tính.',
+      config: 'Config snapshot · chỉ đọc',
+      layers: 'Layer visibility',
+      readonly: 'Chỉ đọc',
+      measurements: 'Measurements',
+      player: 'User flow',
+      puzzle: 'Puzzle location',
+      lighting: 'Lighting',
+      vfx: 'Visual effect / decoration',
+      ghost: 'Ghost NPC in / out',
+      hiddenDoor: 'Hidden door',
+      acts: 'Story acts'
+    },
+    configFields: [
+      { key: 'area', label: 'Internal gross area', value: '60', unit: 'm²' },
+      { key: 'ratio', label: 'Shell width ÷ height', value: '1.6666666667', unit: '' },
+      { key: 'wall', label: 'Partition wall thickness', value: '0.10', unit: 'm' },
+      { key: 'hall', label: 'Clear hallway width', value: '0.80', unit: 'm' },
+      { key: 'rooms', label: 'Central rooms', value: '2', unit: '' },
+      { key: 'circulation', label: 'Circulation', value: 'figure-eight', unit: '' },
+      { key: 'shell', label: 'Calculated shell', value: '10.00 × 6.00', unit: 'm' },
+      { key: 'parent', label: 'Parent iteration', value: 'c01-i01', unit: '' }
+    ],
+    layers: [
+      { id: 'measurements', label: 'Measurements', symbol: '↔', color: '#ffd591', visible: true },
+      { id: 'player', label: 'User flow', symbol: '→', color: '#72ddd1', visible: true },
+      { id: 'puzzle', label: 'Puzzle location', symbol: '◆', color: '#ffd591', visible: false },
+      { id: 'lighting', label: 'Lighting', symbol: '☀', color: '#fff09a', visible: false },
+      { id: 'vfx', label: 'Visual effect / decoration', symbol: '✦', color: '#d0b5f7', visible: false },
+      { id: 'ghost', label: 'Ghost NPC in / out', symbol: 'G', color: '#ff8fcf', visible: false },
+      { id: 'hiddenDoor', label: 'Hidden door', symbol: 'HD', color: '#cda7ff', visible: false },
+      { id: 'acts', label: 'Story acts', symbol: 'A', color: '#75bfff', visible: false }
+    ],
+    marks: {
+      player: [{ x:0.50,y:0.50 },{ x:0.54,y:0.94 },{ x:0.92,y:0.94 },{ x:0.96,y:0.50 },{ x:0.92,y:0.06 },{ x:0.54,y:0.06 },{ x:0.50,y:0.50 },{ x:0.46,y:0.94 },{ x:0.08,y:0.94 },{ x:0.04,y:0.50 },{ x:0.08,y:0.06 },{ x:0.46,y:0.06 },{ x:0.50,y:0.50 }],
+      puzzle: [{ x:0.28,y:0.66,label:'P1' },{ x:0.72,y:0.34,label:'P2' },{ x:0.72,y:0.70,label:'P3' }],
+      lighting: [{ x:0.08,y:0.20,label:'L1' },{ x:0.92,y:0.80,label:'L2' }],
+      vfx: [{ x:0.50,y:0.82,label:'V1' },{ x:0.72,y:0.50,label:'V2' }],
+      ghost: [{ x:-0.04,y:0.18 },{ x:0.08,y:0.18 },{ x:0.46,y:0.18 },{ x:0.46,y:0.50 },{ x:0.92,y:0.50 },{ x:1.04,y:0.50 }],
+      hiddenDoor: [{ x:0.08,y:0.18,label:'IN' },{ x:0.92,y:0.50,label:'OUT' }],
+      acts: [{ x:0.16,y:0.80,label:'1' },{ x:0.50,y:0.20,label:'2' },{ x:0.72,y:0.50,label:'3' }]
     },
     areaCards: [
       { label: 'Hành lang', value: '26,56 m²', note: '44,27% tổng diện tích' },
@@ -114,24 +153,24 @@ window.room2Layout = {
   },
   sections: [
     {
-      title: 'Cấu trúc đã duyệt',
+      title: 'Demo · cấu trúc Draft',
       rows: [
         {
           keyword: 'Phòng A–B',
           brief: 'Độc lập, 4 vách mỗi phòng.',
-          status: 'locked',
+          status: 'draft',
           details: ['Hai phòng nằm trong khu vực chơi; hành lang vòng quanh để tạo hai nhánh của hình số 8.']
         },
         {
           keyword: 'Phòng C–D',
           brief: '3 vách, áp tường phòng GM.',
-          status: 'locked',
+          status: 'draft',
           details: ['C và D dùng tường giáp phòng GM làm cạnh thứ tư; nhân sự có thể tiếp cận khu vực chơi tại hai phòng này.']
         },
         {
           keyword: 'Hành lang',
           brief: 'Hai vòng gặp nhau tại vùng chuyển tiếp trung tâm.',
-          status: 'locked',
+          status: 'draft',
           details: ['Sơ đồ chỉ khóa quan hệ hình số 8, không khóa chiều đi, vị trí giao nhau hoặc hình học cụ thể.']
         }
       ]
@@ -170,7 +209,7 @@ window.room2Layout = {
         {
           keyword: 'Màu tím',
           brief: 'Lối nhân sự từ GM tới C–D.',
-          status: 'locked'
+          status: 'draft'
         },
         {
           keyword: 'Nét đứt',
@@ -180,5 +219,5 @@ window.room2Layout = {
       ]
     }
   ],
-  footer: 'v0.1 · Bản tóm tắt layout công khai. Chỉ topology A–D và quan hệ với phòng GM là Locked; mọi kích thước và hình học chi tiết vẫn là Draft.'
+  footer: 'v0.2 · Demo công khai chỉ để thảo luận. Topology A–D, quan hệ với phòng GM, kích thước và hình học đều là Draft, chưa được duyệt.'
 };
