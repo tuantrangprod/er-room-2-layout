@@ -4,7 +4,7 @@ window.room2Layout = {
   title: 'Giao Ước Máu: Asylum · Room 2 Layout Demo',
   eyebrow: 'Phòng chơi 02 · Báo cáo layout công khai',
   heading: ['Demo:', 'hành lang hình số 8.'],
-  subtitle: 'Minh họa quan hệ bốn phòng quanh hai vòng di chuyển. Toàn bộ sơ đồ này là Draft, chưa được duyệt.',
+  subtitle: 'Phương án bốn phòng và hành lang hình số 8 đang được mở lại để review cùng sức chứa, action flow và no room reuse.',
   statusLegend: {
     draft: 'Draft · chưa được duyệt',
     stable: 'Stable · phép tính nhất quán, không phải phê duyệt'
@@ -13,7 +13,7 @@ window.room2Layout = {
     diagram: 'Sơ đồ quan hệ',
     diagramNote: 'Không theo tỷ lệ · không dùng để thi công',
     playerRoute: 'Luồng người chơi minh họa',
-    staffAccess: 'Lối nhân sự đã xác nhận',
+    staffAccess: 'Lối nhân sự minh họa',
     gmOnly: 'Chỉ nhân sự',
     room: 'Phòng',
     expand: 'Xem chi tiết',
@@ -71,7 +71,7 @@ window.room2Layout = {
       calculations: 'Phép tính',
       assumptions: 'Giả định và giới hạn',
       assumptionKeyword: 'Giả định',
-      assumptionBrief: '4 điều đang dùng để tính.',
+      assumptionBrief: '5 điều đang dùng để tính.',
       config: 'Config snapshot · chỉ đọc',
       layers: 'Layer visibility',
       readonly: 'Chỉ đọc',
@@ -123,7 +123,8 @@ window.room2Layout = {
       '60 m² là tổng diện tích nội bộ đo tới mặt trong vỏ phòng hiện hữu; diện tích này bao gồm vách ngăn mới.',
       'Hành lang 0,80 m là bề rộng thông thủy từ mặt ngoài vách phòng tới biên trong của vỏ phòng.',
       'Mỗi phòng có kích thước ngoài vách 3,80 × 4,40 m và kích thước thông thủy 3,60 × 4,20 m.',
-      'Diện tích vách đang tính theo vách liên tục trước khi trừ các ô cửa; cửa, cột và thiết bị kỹ thuật chưa được bố trí.'
+      'Diện tích vách đang tính theo vách liên tục trước khi trừ các ô cửa; cửa, cột và thiết bị kỹ thuật chưa được bố trí.',
+      'Với 60 m², thiết kế phải đánh đổi bề rộng hoặc chiều dài hành lang, tính tái sử dụng của phòng, hoặc khả năng chứa đủ 8 người trong từng phòng; chưa chọn phương án.'
     ],
     geometry: {
       shell: { width: 10, height: 6 },
@@ -148,6 +149,7 @@ window.room2Layout = {
       { keyword: 'Phòng A', brief: '15,12 m² · thông thủy 3,60 × 4,20 m.', status: 'draft' },
       { keyword: 'Phòng B', brief: '15,12 m² · thông thủy 3,60 × 4,20 m.', status: 'draft' },
       { keyword: 'Vách ngăn', brief: '3,20 m² · dày 0,10 m.', status: 'draft', details: ['Ước tính theo hai vòng vách kín trước khi trừ diện tích ô cửa.'] },
+      { keyword: 'Conflict · 60 m²', brief: 'Không thể đồng thời tối đa hành lang, phòng tái sử dụng và sức chứa 8 người.', status: 'draft', details: ['Các hướng đánh đổi: thu hẹp hành lang; rút ngắn tuyến hành lang; dùng phòng chuyên biệt/không tái sử dụng; hoặc chấp nhận phòng nhỏ khiến một số người phải đứng ngoài hành lang vì không đủ chỗ cho cả 8.', 'Hành lang hẹp hơn và để người chơi tràn ra hành lang chưa phải phương án được duyệt; cần kiểm tra vận hành, sức chứa, tiếp cận và thoát hiểm trước khi chọn.'] },
       { keyword: 'Đối chiếu', brief: 'Tổng phân bổ = 60,00 m².', status: 'stable', details: ['Hành lang + hai phòng thông thủy + vách ngăn cân bằng đúng tổng diện tích nội bộ cấu hình.'] }
     ]
   },
@@ -171,7 +173,7 @@ window.room2Layout = {
           keyword: 'Hành lang',
           brief: 'Hai vòng gặp nhau tại vùng chuyển tiếp trung tâm.',
           status: 'draft',
-          details: ['Sơ đồ chỉ khóa quan hệ hình số 8, không khóa chiều đi, vị trí giao nhau hoặc hình học cụ thể.']
+          details: ['Sơ đồ minh họa quan hệ hình số 8; chiều đi, vị trí giao nhau và hình học cụ thể đều đang review.']
         }
       ]
     },
