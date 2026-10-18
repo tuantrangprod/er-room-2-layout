@@ -7,7 +7,8 @@ window.room2Layout = {
   subtitle: 'Bốn phòng quanh hai vòng di chuyển; cấu trúc đã duyệt được tách khỏi các kích thước và vị trí cửa chưa chốt.',
   statusLegend: {
     locked: 'Locked · cấu trúc đã duyệt',
-    draft: 'Draft · minh họa hoặc chưa có số đo'
+    draft: 'Draft · minh họa hoặc chưa có số đo',
+    stable: 'Stable · phép tính nhất quán, không phải phê duyệt'
   },
   labels: {
     diagram: 'Sơ đồ quan hệ',
@@ -16,8 +17,16 @@ window.room2Layout = {
     staffAccess: 'Lối nhân sự đã xác nhận',
     gmOnly: 'Chỉ nhân sự',
     room: 'Phòng',
-    expand: 'Xem chi tiết'
+    expand: 'Xem chi tiết',
+    tabs: 'Chọn nội dung',
+    summaryTab: 'Tóm tắt đã duyệt',
+    measuredTab: 'Bản nháp đo đạc',
+    summaryVersion: 'Bản tóm tắt chỉ xem'
   },
+  tabs: [
+    { id: 'summary', label: 'Tóm tắt đã duyệt' },
+    { id: 'measured-draft', label: 'Bản nháp đo đạc' }
+  ],
   notice: 'Đây là sơ đồ ý tưởng công khai, không phải bản vẽ xây dựng. Chưa có kích thước nguồn, bề dày vách, bề rộng thông thủy, hướng mở cửa hoặc kiểm tra thoát hiểm.',
   feature: {
     keyword: 'Sơ đồ',
@@ -44,6 +53,61 @@ window.room2Layout = {
     staffAccess: [
       { from: [315, 80], to: [315, 195], status: 'locked' },
       { from: [685, 80], to: [685, 195], status: 'locked' }
+    ]
+  },
+  measurementDraft: {
+    title: 'Room 2 Layout · Measured Draft v0.1',
+    eyebrow: 'Phòng chơi 02 · Bản nháp đo đạc',
+    heading: ['60 m²:', 'hai vòng, hai phòng.'],
+    subtitle: 'Một mặt bằng chữ nhật 10,0 × 6,0 m với hành lang thông thủy 0,8 m chạy quanh hai phòng trung tâm và nối giữa chúng.',
+    notice: 'Bản nháp này thay cấu trúc 4 phòng Locked bằng 2 phòng lớn. Đây là phương án so sánh, chưa thay thế layout đã duyệt. Hành lang 0,8 m cần được chuyên gia kiểm tra về thoát hiểm, tiếp cận, sức chứa và vận hành trước khi chốt.',
+    status: 'draft',
+    labels: {
+      version: 'Bản nháp đo đạc',
+      plan: 'Mặt bằng phân bổ 60 m²',
+      planNote: 'Tỷ lệ hình học 1 m = 100 đơn vị · vách chưa có bề dày',
+      planAria: 'Mặt bằng 10,0 × 6,0 m, hai phòng trung tâm và hành lang rộng 0,8 m',
+      hallwayTotal: 'Hành lang tổng · 26,56 m²',
+      report: 'Báo cáo diện tích',
+      calculations: 'Phép tính',
+      assumptions: 'Giả định và giới hạn',
+      assumptionKeyword: 'Giả định',
+      assumptionBrief: '4 điều đang dùng để tính.'
+    },
+    areaCards: [
+      { label: 'Hành lang', value: '26,56 m²', note: '44,27% tổng diện tích' },
+      { label: 'Phòng lớn A', value: '16,72 m²', note: '3,8 × 4,4 m' },
+      { label: 'Phòng lớn B', value: '16,72 m²', note: '3,8 × 4,4 m' }
+    ],
+    assumptions: [
+      '60 m² là diện tích thông thủy bên trong một vỏ phòng chữ nhật 10,0 × 6,0 m.',
+      'Hành lang 0,8 m là bề rộng thông thủy; sơ đồ chưa tính bề dày vách.',
+      'Hai phòng bằng nhau và dùng vách khái niệm có bề dày bằng 0 để tổng diện tích khớp đúng 60 m².',
+      'Cửa, hướng mở, lối GM, đạo cụ, cột và thiết bị kỹ thuật chưa được bố trí.'
+    ],
+    geometry: {
+      shell: { width: 10, height: 6 },
+      hallwayWidth: 0.8,
+      rooms: [
+        { id: 'A', name: 'PHÒNG LỚN A', x: 0.8, y: 0.8, width: 3.8, height: 4.4, area: 16.72 },
+        { id: 'B', name: 'PHÒNG LỚN B', x: 5.4, y: 0.8, width: 3.8, height: 4.4, area: 16.72 }
+      ]
+    },
+    calculations: [
+      { keyword: 'Tổng mặt bằng', brief: '10,0 × 6,0 = 60,00 m².', value: 60, share: '100%' },
+      { keyword: 'Hành lang biên', brief: '60,00 − (8,4 × 4,4) = 23,04 m².', value: 23.04, share: '38,40%' },
+      { keyword: 'Nhánh giữa', brief: '0,8 × 4,4 = 3,52 m².', value: 3.52, share: '5,87%' },
+      { keyword: 'Hành lang tổng', brief: '23,04 + 3,52 = 26,56 m².', value: 26.56, share: '44,27%' },
+      { keyword: 'Phòng lớn A', brief: '3,8 × 4,4 = 16,72 m².', value: 16.72, share: '27,87%' },
+      { keyword: 'Phòng lớn B', brief: '3,8 × 4,4 = 16,72 m².', value: 16.72, share: '27,87%' }
+    ],
+    check: '26,56 + 16,72 + 16,72 = 60,00 m².',
+    footer: 'Bản nháp đo đạc v0.1 · Chưa tính bề dày vách, cửa, cột hoặc yêu cầu kỹ thuật. Cần đo mặt bằng và duyệt an toàn trước khi phát triển thành blueprint.',
+    report: [
+      { keyword: 'Hành lang', brief: '26,56 m² · 44,27% tổng diện tích.', status: 'draft', details: ['Gồm 23,04 m² hành lang bao quanh và 3,52 m² nhánh nối giữa hai phòng. Bề rộng thông thủy mục tiêu: 0,8 m.'] },
+      { keyword: 'Phòng A', brief: '16,72 m² · kích thước 3,8 × 4,4 m.', status: 'draft' },
+      { keyword: 'Phòng B', brief: '16,72 m² · kích thước 3,8 × 4,4 m.', status: 'draft' },
+      { keyword: 'Đối chiếu', brief: 'Tổng phân bổ = 60,00 m².', status: 'stable', details: ['Phép tính chỉ đúng với giả định vách chưa có bề dày. Khi thêm vách thật, cần xác định 60 m² là diện tích nào rồi tính lại kích thước thông thủy.'] }
     ]
   },
   sections: [

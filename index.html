@@ -21,6 +21,12 @@
     .legend span { display:inline-flex; align-items:center; gap:7px; }
     .dot { width:11px; height:11px; border-radius:50%; background:#9eabb1; }
     .dot.locked { background:#5cdaad; }
+    .dot.stable { background:#75bfff; }
+    .tabs { display:flex; gap:8px; margin:0 0 26px; border-bottom:1px solid #354955; }
+    .tab { padding:10px 13px; border:0; border-bottom:2px solid transparent; color:#b7c8c8; background:transparent; cursor:pointer; }
+    .tab[aria-selected="true"] { color:#a4f1d4; border-color:#a4f1d4; }
+    .tab:focus-visible { outline:2px solid #9df6d8; outline-offset:2px; }
+    .tab-panel[hidden] { display:none; }
     section { margin:0 0 27px; }
     section.feature { border:2px solid #a4f1d4; border-radius:16px; padding:10px 15px; background:linear-gradient(110deg,#1d4145,#172b37); }
     h2 { margin:0 0 8px; color:#b8d7d4; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; }
@@ -56,6 +62,21 @@
     .staff-label { fill:#d0b5f7; font-size:13px; font-weight:700; text-anchor:middle; }
     .route-label { fill:#72ddd1; font-size:14px; font-weight:750; text-anchor:middle; }
     .draft-note { fill:#ffd591; font-size:13px; font-weight:700; text-anchor:middle; }
+    .measured-plan .hall { fill:#72ddd126; stroke:#72ddd1; stroke-width:3; }
+    .measured-plan .measured-room { fill:#172b37; stroke:#dce8e5; stroke-width:5; }
+    .measured-plan .measure { stroke:#ffd591; stroke-width:2; marker-start:url(#measure-arrow); marker-end:url(#measure-arrow); }
+    .measured-plan .measure-guide { stroke:#ffd59188; stroke-width:1; stroke-dasharray:5 4; }
+    .measured-plan .measure-text { fill:#ffd591; font-size:16px; font-weight:750; text-anchor:middle; paint-order:stroke; stroke:#0f202b; stroke-width:5; }
+    .measured-plan .area-text { fill:#a4f1d4; font-size:16px; font-weight:750; text-anchor:middle; }
+    .area-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 24px; }
+    .area-card { padding:13px; border:1px solid #354955; border-radius:10px; background:#132633; }
+    .area-card strong { display:block; color:#a4f1d4; font-size:.8rem; }
+    .area-card b { display:block; margin:5px 0 2px; font:500 1.65rem/1 Georgia,serif; color:#eef5f2; }
+    .area-card span { color:#a7bfc0; font-size:.73rem; }
+    .formula { display:grid; grid-template-columns:minmax(120px,165px) minmax(0,1fr) 75px; gap:10px; padding:10px 4px; border-bottom:1px solid #354955; font-size:.82rem; line-height:1.45; }
+    .formula strong { color:#ffd591; }
+    .formula output { color:#a4f1d4; font-weight:800; text-align:right; }
+    .check { margin:12px 0 0; padding:10px 12px; border:1px solid #75bfff; border-radius:8px; color:#cce6ff; background:#75bfff10; font-size:.82rem; }
     footer { border-top:1px solid #354955; padding-top:18px; color:#b7c8c8; font-size:.8rem; line-height:1.55; }
     @media (max-width:560px) {
       main { padding:28px 18px 60px; }
@@ -66,6 +87,11 @@
       .more { margin-left:31px; }
       .plan-head { display:block; }
       .plan-head span { display:block; margin-top:3px; }
+      .tabs { overflow-x:auto; }
+      .tab { flex:0 0 auto; }
+      .area-cards { grid-template-columns:1fr; }
+      .formula { grid-template-columns:1fr auto; }
+      .formula span { grid-column:1/-1; grid-row:2; }
     }
     @media print {
       :root { color-scheme:light; background:#fff; color:#111; }
@@ -148,31 +174,146 @@
         svgAdd(svg, 'text', { x:500, y:355, class:'draft-note' }, data.labels.diagramNote);
         return card;
       }
+      function renderMeasuredPlan(parent) {
+        const draft = data.measurementDraft;
+        const geometry = draft.geometry;
+        const scale = 100;
+        const origin = [80,80];
+        const card = add(parent, 'figure', 'plan-card');
+        const head = add(card, 'figcaption', 'plan-head');
+        add(head, 'strong', '', draft.labels.plan);
+        add(head, 'span', '', draft.labels.planNote);
+        const wrap = add(card, 'div', 'plan-wrap');
+        const svg = svgAdd(wrap, 'svg', { viewBox:'0 0 1160 760', class:'measured-plan', role:'img', 'aria-label':draft.labels.planAria });
+        const defs = svgAdd(svg, 'defs');
+        const pattern = svgAdd(defs, 'pattern', { id:'measured-grid', width:50, height:50, patternUnits:'userSpaceOnUse' });
+        svgAdd(pattern, 'path', { d:'M 50 0 L 0 0 0 50', class:'grid', fill:'none' });
+        const measureMarker = svgAdd(defs, 'marker', { id:'measure-arrow', viewBox:'0 0 10 10', refX:5, refY:5, markerWidth:5, markerHeight:5, orient:'auto-start-reverse' });
+        svgAdd(measureMarker, 'path', { d:'M 10 0 L 0 5 L 10 10', fill:'#ffd591' });
+        const routeMarker = svgAdd(defs, 'marker', { id:'measured-route-arrow', viewBox:'0 0 10 10', refX:8, refY:5, markerWidth:5, markerHeight:5, orient:'auto' });
+        svgAdd(routeMarker, 'path', { d:'M 0 0 L 10 5 L 0 10 z', fill:'#72ddd1' });
+        svgAdd(svg, 'rect', { width:1160, height:760, fill:'url(#measured-grid)' });
+        const shellWidth = geometry.shell.width * scale;
+        const shellHeight = geometry.shell.height * scale;
+        svgAdd(svg, 'rect', { x:origin[0], y:origin[1], width:shellWidth, height:shellHeight, class:'hall' });
+        geometry.rooms.forEach(room => {
+          const x = origin[0] + room.x * scale;
+          const y = origin[1] + room.y * scale;
+          const width = room.width * scale;
+          const height = room.height * scale;
+          svgAdd(svg, 'rect', { x, y, width, height, class:'measured-room' });
+          svgAdd(svg, 'text', { x:x+width/2, y:y+height/2-20, class:'room-name' }, room.name);
+          svgAdd(svg, 'text', { x:x+width/2, y:y+height/2+12, class:'room-note' }, `${room.width.toFixed(1)} × ${room.height.toFixed(1)} m`);
+          svgAdd(svg, 'text', { x:x+width/2, y:y+height/2+42, class:'area-text' }, `${room.area.toFixed(2)} m²`);
+        });
+        const route = 'M120 640 L120 120 L350 120 Q540 120 540 300 L540 520 Q540 640 350 640 L120 640 M540 300 Q540 120 730 120 L1040 120 L1040 640 L730 640 Q540 640 540 520';
+        svgAdd(svg, 'path', { d:route, class:'route', 'marker-end':'url(#measured-route-arrow)' });
+        function measure(x1,y1,x2,y2,label,textX,textY) {
+          svgAdd(svg, 'line', { x1,y1,x2,y2,class:'measure' });
+          svgAdd(svg, 'text', { x:textX, y:textY, class:'measure-text' }, label);
+        }
+        svgAdd(svg, 'line', { x1:80,y1:80,x2:80,y2:38,class:'measure-guide' });
+        svgAdd(svg, 'line', { x1:1080,y1:80,x2:1080,y2:38,class:'measure-guide' });
+        measure(80,42,1080,42,'10,0 m',580,30);
+        svgAdd(svg, 'line', { x1:80,y1:80,x2:38,y2:80,class:'measure-guide' });
+        svgAdd(svg, 'line', { x1:80,y1:680,x2:38,y2:680,class:'measure-guide' });
+        measure(42,80,42,680,'6,0 m',23,386);
+        measure(80,720,160,720,'0,8 m',120,744);
+        measure(540,380,620,380,'0,8 m',580,368);
+        svgAdd(svg, 'text', { x:580, y:720, class:'route-label' }, draft.labels.hallwayTotal);
+        return card;
+      }
+      function renderMeasuredDraft(parent) {
+        const draft = data.measurementDraft;
+        renderMeasuredPlan(parent);
+        const cards = add(parent, 'div', 'area-cards');
+        draft.areaCards.forEach(item => {
+          const card = add(cards, 'div', 'area-card');
+          add(card, 'strong', '', item.label);
+          add(card, 'b', '', item.value);
+          add(card, 'span', '', item.note);
+        });
+        const report = add(parent, 'section');
+        add(report, 'h2', '', draft.labels.report);
+        draft.report.forEach(item => row(report, item));
+        const calculations = add(parent, 'section');
+        add(calculations, 'h2', '', draft.labels.calculations);
+        draft.calculations.forEach(item => {
+          const line = add(calculations, 'div', 'formula');
+          add(line, 'strong', '', item.keyword);
+          add(line, 'span', '', item.brief);
+          add(line, 'output', '', `${item.value.toFixed(2).replace('.', ',')} m²`);
+        });
+        add(calculations, 'p', 'check', draft.check);
+        const assumptions = add(parent, 'section');
+        add(assumptions, 'h2', '', draft.labels.assumptions);
+        row(assumptions, { keyword:draft.labels.assumptionKeyword, brief:draft.labels.assumptionBrief, status:'draft', details:draft.assumptions });
+        add(parent, 'footer', '', draft.footer);
+      }
       if (!data) return;
-      document.title = data.title;
       root.replaceChildren();
-      add(root, 'div', 'eyebrow', data.eyebrow);
+      const eyebrow = add(root, 'div', 'eyebrow');
       const title = add(root, 'h1');
-      add(title, 'span', '', data.heading[0]);
-      add(title, 'em', '', data.heading[1]);
-      add(root, 'p', 'subtitle', data.subtitle);
-      add(root, 'p', 'version', `${data.version} · Bản tóm tắt chỉ xem`);
-      add(root, 'p', 'notice', data.notice);
+      const titleMain = add(title, 'span');
+      const titleAccent = add(title, 'em');
+      const subtitle = add(root, 'p', 'subtitle');
+      const version = add(root, 'p', 'version');
+      const notice = add(root, 'p', 'notice');
       const legend = add(root, 'div', 'legend');
       Object.entries(data.statusLegend).forEach(([status,label]) => {
         const item = add(legend, 'span');
         add(item, 'i', `dot ${status}`);
         add(item, 'span', '', label);
       });
-      const feature = add(root, 'section', 'feature');
+      const tabs = add(root, 'nav', 'tabs');
+      tabs.setAttribute('aria-label', data.labels.tabs);
+      tabs.setAttribute('role', 'tablist');
+      const panels = new Map();
+      const buttons = new Map();
+      data.tabs.forEach(item => {
+        const button = add(tabs, 'button', 'tab', item.label);
+        button.type = 'button';
+        button.id = `tab-${item.id}`;
+        button.setAttribute('role', 'tab');
+        button.setAttribute('aria-controls', `panel-${item.id}`);
+        button.addEventListener('click', () => { location.hash = item.id; });
+        buttons.set(item.id, button);
+        const panel = add(root, 'div', 'tab-panel');
+        panel.id = `panel-${item.id}`;
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', button.id);
+        panels.set(item.id, panel);
+      });
+      const summaryPanel = panels.get('summary');
+      const feature = add(summaryPanel, 'section', 'feature');
       row(feature, data.feature);
-      renderPlan(root);
+      renderPlan(summaryPanel);
       data.sections.forEach(section => {
-        const group = add(root, 'section');
+        const group = add(summaryPanel, 'section');
         add(group, 'h2', '', section.title);
         section.rows.forEach(item => row(group, item));
       });
-      add(root, 'footer', '', data.footer);
+      add(summaryPanel, 'footer', '', data.footer);
+      renderMeasuredDraft(panels.get('measured-draft'));
+      function selectTab() {
+        const requested = location.hash.slice(1);
+        const active = panels.has(requested) ? requested : 'summary';
+        panels.forEach((panel,id) => { panel.hidden = id !== active; });
+        buttons.forEach((button,id) => {
+          button.setAttribute('aria-selected', id === active ? 'true' : 'false');
+          button.tabIndex = id === active ? 0 : -1;
+        });
+        const view = active === 'measured-draft' ? data.measurementDraft : data;
+        eyebrow.textContent = view.eyebrow;
+        titleMain.textContent = view.heading[0];
+        titleAccent.textContent = view.heading[1];
+        subtitle.textContent = view.subtitle;
+        version.textContent = `${data.version} · ${active === 'measured-draft' ? data.measurementDraft.labels.version : data.labels.summaryVersion}`;
+        notice.textContent = view.notice;
+        document.title = active === 'measured-draft' ? view.title : data.title;
+      }
+      window.addEventListener('hashchange', selectTab);
+      selectTab();
     })();
   </script>
 </body>
