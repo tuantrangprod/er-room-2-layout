@@ -1,8 +1,8 @@
 # Giao Ước Máu: Asylum · Room 2 Layout
 
-Public Room 2 layout workflow and measured drafts.
+Public, read-only Room 2 layout report.
 
-- Layout designer: <https://tuantrangprod.github.io/er-room-2-layout/>
-- Frozen public summary: <https://tuantrangprod.github.io/er-room-2-layout/summary/>
+- Published page: <https://tuantrangprod.github.io/er-room-2-layout/>
+- Contains locked source summary and explicitly selected layout draft reports.
 - Concept design only; not a construction or safety-approved drawing.
-- Content and initial drafts live in `room-layout-design-data.js`; `index.html` handles display and interaction.
+- Report content lives in `room-2-layout-data.js`; `index.html` handles display.
