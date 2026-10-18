@@ -1,115 +1,148 @@
 <!doctype html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#101b28">
-  <meta name="description" content="Tóm tắt công khai layout Phòng 2 · Giao Ước Máu: Asylum">
-  <title>Giao Ước Máu: Asylum · Room 2 Layout v0.1</title>
+  <title>Room layout design</title>
   <style>
-    :root { color-scheme:dark; font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:#101b28; color:#eef5f2; }
+    :root { color-scheme:dark; font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:#101b28; color:#eef5f2; }
     * { box-sizing:border-box; }
-    body { margin:0; background:radial-gradient(ellipse 90% 420px at 85% 0%,#254551,transparent 75%),#101b28; }
-    main { max-width:980px; margin:auto; padding:45px 22px 72px; }
-    .eyebrow { color:#89edcf; font-size:.75rem; font-weight:800; letter-spacing:.12em; text-transform:uppercase; }
-    h1 { font:500 clamp(2.5rem,8vw,4.4rem)/1 Georgia,serif; letter-spacing:-.05em; margin:18px 0 12px; }
-    h1 em { display:block; color:#a5f1d3; font-style:normal; }
-    .subtitle { max-width:720px; margin:0 0 8px; color:#d2e0de; font-size:.9rem; line-height:1.55; }
-    .version { color:#b7c8c8; margin:0 0 14px; font-size:.82rem; }
-    .notice { margin:0 0 17px; padding:10px 13px; border-left:3px solid #ffd591; background:#ffd5910e; color:#e5d4b5; font-size:.78rem; line-height:1.55; }
-    .legend { display:flex; flex-wrap:wrap; gap:8px 18px; margin:0 0 28px; color:#b7c8c8; font-size:.76rem; }
-    .legend span { display:inline-flex; align-items:center; gap:7px; }
-    .dot { width:11px; height:11px; border-radius:50%; background:#9eabb1; }
-    .dot.locked { background:#5cdaad; }
-    .dot.stable { background:#75bfff; }
-    .tabs { display:flex; gap:8px; margin:0 0 26px; border-bottom:1px solid #354955; }
-    .tab { padding:10px 13px; border:0; border-bottom:2px solid transparent; color:#b7c8c8; background:transparent; cursor:pointer; }
+    body { margin:0; min-width:320px; background:radial-gradient(ellipse 90% 420px at 85% 0%,#254551 0%,transparent 75%),#101b28; }
+    button,input { font:inherit; }
+    .page { max-width:1180px; margin:auto; padding:28px 18px 72px; }
+    .eyebrow { color:#89edcf; font-size:.7rem; font-weight:800; letter-spacing:.13em; text-transform:uppercase; }
+    h1 { font:500 clamp(2.5rem,8vw,4.4rem)/.99 Georgia,serif; letter-spacing:-.055em; margin:17px 0 16px; }
+    h1 em { color:#a5f1d3; font-style:normal; }
+    .intro { max-width:800px; margin:0 0 14px; color:#c4d6d3; font-size:.87rem; line-height:1.6; }
+    .legend { display:flex; flex-wrap:wrap; gap:8px 18px; margin:0 0 24px; color:#b7c8c8; font-size:.76rem; }
+    .legend-item { display:inline-flex; align-items:center; gap:7px; }
+    .status-dot { display:inline-grid; place-items:center; flex:0 0 auto; width:22px; height:22px; }
+    .status-dot::before { content:""; width:12px; height:12px; border-radius:50%; background:#9eabb1; }
+    .status-dot[data-status="locked"]::before { background:#5cdaad; }
+    .status-dot[data-status="stable"]::before { background:#75bfff; }
+    .status-dot[data-status="rejected"]::before { background:#ff7777; }
+    .tabs { display:flex; gap:8px; margin:0 0 25px; overflow-x:auto; border-bottom:1px solid #354955; }
+    .tab { flex:0 0 auto; padding:10px 13px; border:0; border-bottom:2px solid transparent; color:#b7c8c8; background:transparent; cursor:pointer; }
     .tab[aria-selected="true"] { color:#a4f1d4; border-color:#a4f1d4; }
-    .tab:focus-visible { outline:2px solid #9df6d8; outline-offset:2px; }
+    .tab:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible { outline:2px solid #9df6d8; outline-offset:2px; }
     .tab-panel[hidden] { display:none; }
-    section { margin:0 0 27px; }
-    section.feature { border:2px solid #a4f1d4; border-radius:16px; padding:10px 15px; background:linear-gradient(110deg,#1d4145,#172b37); }
-    h2 { margin:0 0 8px; color:#b8d7d4; font-size:.8rem; letter-spacing:.08em; text-transform:uppercase; }
-    .row { border-bottom:1px solid #354955; }
-    .row:last-child,.feature .row { border:0; }
-    .row-head { display:grid; grid-template-columns:12px minmax(120px,165px) 1fr 24px; align-items:center; gap:10px; padding:12px 4px; line-height:1.5; list-style:none; }
-    .row-head:not(.expandable) { grid-template-columns:12px minmax(120px,165px) 1fr; }
-    summary { cursor:pointer; }
-    summary::-webkit-details-marker { display:none; }
-    summary:hover { background:#ffffff0b; }
-    summary:focus-visible { outline:2px solid #9df6d8; outline-offset:2px; }
-    .keyword { color:#ffd591; }
-    .feature .keyword { color:#a4f1d4; }
-    .brief { color:#e1eeeb; }
-    .more { margin:-2px 0 12px 197px; color:#b7c8c8; font-size:.82rem; line-height:1.55; }
-    .more p { margin:0 0 7px; }
-    .expand { display:grid; place-items:center; width:22px; height:22px; border-radius:5px; background:#ffffff12; color:#a4f1d4; }
-    details[open] .expand { background:#ffffff2a; }
-    .plan-card { margin:0 0 28px; overflow:hidden; border:1px solid #354955; border-radius:14px; background:#132633; }
-    .plan-head { display:flex; justify-content:space-between; gap:12px; padding:13px 15px; border-bottom:1px solid #354955; }
-    .plan-head strong { color:#a4f1d4; font-size:.84rem; }
-    .plan-head span { color:#a7bfc0; font-size:.76rem; }
-    .plan-wrap { padding:12px; }
-    svg { display:block; width:100%; height:auto; border-radius:8px; background:#0f202b; }
-    .grid { stroke:#ffffff0b; stroke-width:1; }
-    .room { fill:#9ee2e50a; stroke:#dce8e5; stroke-width:8; }
-    .room.attached { stroke:#a4f1d4; }
-    .gm { fill:#d0b5f710; stroke:#d0b5f7; }
-    .room-name { fill:#eef5f2; font-size:19px; font-weight:800; text-anchor:middle; }
-    .room-note { fill:#a9bdbc; font-size:14px; text-anchor:middle; }
-    .route { fill:none; stroke:#72ddd1; stroke-width:10; stroke-linecap:round; stroke-dasharray:18 12; opacity:.9; marker-end:url(#player-arrow); }
-    .staff { stroke:#d0b5f7; stroke-width:8; stroke-dasharray:14 9; marker-end:url(#staff-arrow); }
-    .staff-label { fill:#d0b5f7; font-size:13px; font-weight:700; text-anchor:middle; }
-    .route-label { fill:#72ddd1; font-size:14px; font-weight:750; text-anchor:middle; }
-    .draft-note { fill:#ffd591; font-size:13px; font-weight:700; text-anchor:middle; }
-    .measured-plan .hall { fill:#72ddd126; stroke:#72ddd1; stroke-width:3; }
-    .measured-plan .measured-room { fill:#172b37; stroke:#dce8e5; stroke-width:5; }
-    .measured-plan .measure { stroke:#ffd591; stroke-width:2; marker-start:url(#measure-arrow); marker-end:url(#measure-arrow); }
-    .measured-plan .measure-guide { stroke:#ffd59188; stroke-width:1; stroke-dasharray:5 4; }
-    .measured-plan .measure-text { fill:#ffd591; font-size:16px; font-weight:750; text-anchor:middle; paint-order:stroke; stroke:#0f202b; stroke-width:5; }
-    .measured-plan .area-text { fill:#a4f1d4; font-size:16px; font-weight:750; text-anchor:middle; }
-    .area-cards { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 24px; }
-    .area-card { padding:13px; border:1px solid #354955; border-radius:10px; background:#132633; }
-    .area-card strong { display:block; color:#a4f1d4; font-size:.8rem; }
-    .area-card b { display:block; margin:5px 0 2px; font:500 1.65rem/1 Georgia,serif; color:#eef5f2; }
-    .area-card span { color:#a7bfc0; font-size:.73rem; }
-    .formula { display:grid; grid-template-columns:minmax(120px,165px) minmax(0,1fr) 75px; gap:10px; padding:10px 4px; border-bottom:1px solid #354955; font-size:.82rem; line-height:1.45; }
+    .section { margin:0 0 25px; --heading-tone:#d0b5f7; }
+    .section[data-color-preset="orange"] { --heading-tone:#ffd591; }
+    .section[data-color-preset="cyan"] { --heading-tone:#9ee2e5; }
+    .section[data-color-preset="mint"] { --heading-tone:#a4f1d4; }
+    .section h2,.panel-title { margin:0 0 9px; color:#b8d7d4; font-size:.77rem; font-weight:850; letter-spacing:.08em; text-transform:uppercase; }
+    .row { --tone:#a4f1d4; border-bottom:1px solid #354955; }
+    .row-head { display:grid; grid-template-columns:22px 135px minmax(0,1fr) 23px; align-items:center; gap:10px; min-height:44px; padding:9px 5px; list-style:none; }
+    .row-head:not(.has-details) { grid-template-columns:22px 135px minmax(0,1fr); }
+    summary.row-head { cursor:pointer; }
+    summary.row-head::-webkit-details-marker { display:none; }
+    summary.row-head:hover { background:#ffffff0b; }
+    .keyword { color:var(--heading-tone,var(--tone)); font-size:.84rem; font-weight:850; }
+    .brief { min-width:0; color:#e1eeeb; font-size:.85rem; line-height:1.45; }
+    .expand { display:grid; place-items:center; width:23px; height:23px; border-radius:6px; background:#ffffff12; color:#a4f1d4; }
+    details[open] > .row-head .expand { background:#ffffff2a; }
+    .more { padding:0 30px 12px 177px; color:#c4d6d3; font-size:.84rem; line-height:1.6; overflow-wrap:anywhere; }
+    .more p { margin:0 0 8px; }
+    .draft-head { display:flex; align-items:flex-start; justify-content:space-between; gap:15px; margin-bottom:16px; }
+    .draft-head h2 { margin:0; color:#a4f1d4; font:600 1.25rem/1.2 Georgia,serif; }
+    .draft-head p { margin:5px 0 0; color:#c4d6d3; font-size:.84rem; }
+    .draft-meta { text-align:right; color:#a7bfc0; font-size:.73rem; line-height:1.5; }
+    .config-grid { display:grid; grid-template-columns:repeat(4,minmax(130px,1fr)); gap:9px; margin-bottom:12px; }
+    .config-field,.config-value { display:grid; gap:5px; min-width:0; padding:10px; border:1px solid #354955; border-radius:8px; background:#132633; }
+    .config-field span,.config-value span { color:#a7bfc0; font-size:.7rem; }
+    .config-field input { width:100%; min-width:0; padding:5px 7px; border:1px solid #536874; border-radius:5px; color:#eef5f2; background:#0f202b; }
+    .config-field b,.config-value b { color:#e8f2ef; font-size:.87rem; }
+    .basis { margin:0 0 15px; color:#a7bfc0; font-size:.76rem; line-height:1.5; }
+    .workspace { display:grid; grid-template-columns:minmax(0,1.55fr) minmax(290px,.75fr); gap:15px; align-items:start; margin-bottom:24px; }
+    .card { min-width:0; border:1px solid #354955; border-radius:12px; background:#132633; }
+    .card-head { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; padding:12px 14px; border-bottom:1px solid #354955; }
+    .card-head strong { color:#a4f1d4; font-size:.83rem; }
+    .card-head span { color:#a7bfc0; font-size:.72rem; }
+    .plan-wrap { padding:8px; overflow:auto; }
+    .plan { display:block; width:100%; min-width:540px; height:auto; border-radius:7px; background:#0f202b; cursor:crosshair; }
+    .plan .grid-line { stroke:#ffffff0c; stroke-width:8; }
+    .plan .hall { fill:#72ddd121; stroke:#72ddd1; stroke-width:6; }
+    .plan .wall-fill { fill:#dce8e5; }
+    .plan .room-clear { fill:#172b37; stroke:#9ee2e555; stroke-width:4; }
+    .plan .room-name { fill:#eef5f2; font-size:32px; font-weight:800; text-anchor:middle; }
+    .plan .room-note { fill:#a9bdbc; font-size:24px; text-anchor:middle; }
+    .plan .dimension { stroke:#ffd591; stroke-width:4; marker-start:url(#dim-arrow); marker-end:url(#dim-arrow); }
+    .plan .dimension-guide { stroke:#ffd59188; stroke-width:3; stroke-dasharray:18 14; }
+    .plan .dimension-text { fill:#ffd591; font-size:28px; font-weight:750; text-anchor:middle; paint-order:stroke; stroke:#0f202b; stroke-width:8; }
+    .plan .mark-path { fill:none; stroke-width:6; stroke-linecap:round; stroke-linejoin:round; }
+    .plan .mark-player { stroke:#72ddd1; marker-end:url(#arrow-player); }
+    .plan .mark-ghost { stroke:#ff8fcf; stroke-dasharray:95 55; marker-end:url(#arrow-ghost); }
+    .plan .mark-symbol { font-size:32px; font-weight:850; text-anchor:middle; dominant-baseline:middle; paint-order:stroke; stroke:#0f202b; stroke-width:8; stroke-linejoin:round; }
+    .plan .mark-label { font-size:18px; font-weight:800; text-anchor:middle; paint-order:stroke; stroke:#0f202b; stroke-width:6; }
+    .plan .act-circle { fill:#102c3c; stroke:#75bfff; stroke-width:4; }
+    .side { padding:12px; }
+    .side section { margin-bottom:17px; }
+    .side section:last-child { margin-bottom:0; }
+    .layer-list { display:grid; gap:5px; }
+    .layer-item { display:grid; grid-template-columns:22px 25px minmax(0,1fr); align-items:center; gap:7px; min-height:31px; color:#d8e7e4; font-size:.76rem; }
+    .layer-item input { accent-color:#5cdaad; }
+    .symbol { font-weight:900; text-align:center; }
+    .tool-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+    .tool { min-width:0; padding:7px; border:1px solid #43525c; border-radius:6px; color:#d5e4e1; background:#1b2c35; cursor:pointer; text-align:left; font-size:.72rem; }
+    .tool[aria-pressed="true"] { border-color:#a4f1d4; background:#1d4145; color:#a4f1d4; }
+    .tool-actions { display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+    .tool-actions button { padding:6px 8px; border:1px solid #43525c; border-radius:5px; color:#b7c8c8; background:#142a35; cursor:pointer; font-size:.7rem; }
+    .tool-help { margin:8px 0 0; color:#a7bfc0; font-size:.7rem; line-height:1.45; }
+    .area-cards { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:9px; margin-bottom:18px; }
+    .area-card { padding:12px; border:1px solid #354955; border-radius:9px; background:#132633; }
+    .area-card strong { display:block; color:#a4f1d4; font-size:.75rem; }
+    .area-card b { display:block; margin:5px 0 3px; color:#eef5f2; font:500 1.45rem/1 Georgia,serif; }
+    .area-card span { color:#a7bfc0; font-size:.69rem; }
+    .report-grid { display:grid; grid-template-columns:1fr 1fr; gap:18px; }
+    .formula { display:grid; grid-template-columns:150px minmax(0,1fr) 80px; gap:9px; padding:9px 4px; border-bottom:1px solid #354955; color:#dbe9e6; font-size:.78rem; }
     .formula strong { color:#ffd591; }
-    .formula output { color:#a4f1d4; font-weight:800; text-align:right; }
-    .check { margin:12px 0 0; padding:10px 12px; border:1px solid #75bfff; border-radius:8px; color:#cce6ff; background:#75bfff10; font-size:.82rem; }
-    footer { border-top:1px solid #354955; padding-top:18px; color:#b7c8c8; font-size:.8rem; line-height:1.55; }
-    @media (max-width:560px) {
-      main { padding:28px 18px 60px; }
-      .row-head,.row-head:not(.expandable) { grid-template-columns:12px 1fr 24px; gap:2px 9px; }
+    .formula output { color:#a4f1d4; text-align:right; font-weight:800; }
+    .check { padding:10px 12px; border:1px solid #75bfff; border-radius:8px; color:#cce6ff; background:#75bfff0d; font-size:.8rem; line-height:1.5; }
+    .check.warning { border-color:#ffd591; color:#f3ddb4; background:#ffd5910c; }
+    .foot { border-top:1px solid #354955; margin-top:30px; padding-top:15px; color:#a7bfc0; font-size:.75rem; line-height:1.6; }
+    @media (max-width:900px) { .workspace,.report-grid { grid-template-columns:1fr; } .config-grid { grid-template-columns:1fr 1fr; } }
+    @media (max-width:600px) {
+      .config-grid,.area-cards { grid-template-columns:1fr; }
+      .row-head,.row-head:not(.has-details) { grid-template-columns:22px minmax(0,1fr) 23px; gap:3px 9px; }
       .keyword { grid-column:2; }
       .brief { grid-column:2; grid-row:2; }
       .expand { grid-column:3; grid-row:1/3; }
-      .more { margin-left:31px; }
-      .plan-head { display:block; }
-      .plan-head span { display:block; margin-top:3px; }
-      .tabs { overflow-x:auto; }
-      .tab { flex:0 0 auto; }
-      .area-cards { grid-template-columns:1fr; }
+      .more { padding:0 8px 12px 34px; }
+      .draft-head { display:block; }
+      .draft-meta { margin-top:8px; text-align:left; }
       .formula { grid-template-columns:1fr auto; }
       .formula span { grid-column:1/-1; grid-row:2; }
     }
+    @media (min-width:650px) { .page { padding:45px 40px 80px; } }
     @media print {
       :root { color-scheme:light; background:#fff; color:#111; }
       body { background:#fff; }
-      main { max-width:none; padding:10mm; }
-      .plan-card,section { break-inside:avoid; }
+      .page { max-width:none; padding:10mm; }
+      .tabs,.side,.config-field input { display:none; }
+      .workspace { grid-template-columns:1fr; }
+      .card,.area-card,.config-field,.config-value { background:#fff; border-color:#999; }
+      .plan { background:#fff; }
+      .plan .dimension-text,.plan .mark-symbol,.plan .mark-label { stroke:#fff; }
     }
   </style>
 </head>
 <body>
-  <main id="summary"><noscript>Cần bật JavaScript để xem tóm tắt layout Phòng 2.</noscript></main>
-  <script src="room-2-layout-data.js"></script>
+  <main class="page" id="app"><p>Loading…</p></main>
+  <script src="room-layout-design-data.js"></script>
   <script>
-    // Display only. Versioned content and conceptual geometry live in adjacent data-only JS.
     (() => {
-      const data = window.room2Layout;
-      const root = document.getElementById('summary');
+      const source = window.roomLayoutDesign;
+      const root = document.getElementById('app');
       const NS = 'http://www.w3.org/2000/svg';
+      const clone = value => JSON.parse(JSON.stringify(value));
+      const state = {
+        drafts: clone(source.drafts),
+        visible: Object.fromEntries(source.layers.map(layer => [layer.id, layer.visibleByDefault !== false])),
+        tool: null,
+        history: Object.fromEntries(source.drafts.map(draft => [draft.id, []]))
+      };
+
       function add(parent, tag, className, text) {
         const node = document.createElement(tag);
         if (className) node.className = className;
@@ -124,195 +157,289 @@
         parent.append(node);
         return node;
       }
-      function row(parent, item) {
-        const wrapper = add(parent, 'div', 'row');
+      function fmt(value, digits = 2) { return Number(value).toFixed(digits); }
+      function row(parent, item, colorPreset) {
         const expandable = Boolean(item.details?.length);
-        const panel = add(wrapper, expandable ? 'details' : 'div');
-        const head = add(panel, expandable ? 'summary' : 'div', expandable ? 'row-head expandable' : 'row-head');
-        const dot = add(head, 'span', `dot ${item.status}`);
-        dot.title = data.statusLegend[item.status];
-        dot.setAttribute('aria-label', data.statusLegend[item.status]);
-        dot.setAttribute('role', 'img');
-        add(head, 'strong', 'keyword', item.keyword);
+        const wrapper = add(parent, expandable ? 'details' : 'div', 'row');
+        if (colorPreset) wrapper.style.setProperty('--heading-tone', colorPreset);
+        const head = add(wrapper, expandable ? 'summary' : 'div', `row-head${expandable ? ' has-details' : ''}`);
+        const dot = add(head, 'span', 'status-dot');
+        dot.dataset.status = item.status || 'draft';
+        add(head, 'span', 'keyword', item.keyword);
         add(head, 'span', 'brief', item.brief);
         if (expandable) {
-          const expand = add(head, 'span', 'expand', '…');
-          expand.title = data.labels.expand;
-          expand.setAttribute('aria-hidden', 'true');
-          const more = add(panel, 'div', 'more');
+          add(head, 'span', 'expand', '…');
+          const more = add(wrapper, 'div', 'more');
           item.details.forEach(detail => add(more, 'p', '', detail));
         }
       }
-      function renderPlan(parent) {
-        const card = add(parent, 'figure', 'plan-card');
-        const head = add(card, 'figcaption', 'plan-head');
-        add(head, 'strong', '', data.labels.diagram);
-        add(head, 'span', '', data.labels.diagramNote);
-        const wrap = add(card, 'div', 'plan-wrap');
-        const svg = svgAdd(wrap, 'svg', { viewBox:'0 0 1000 710', role:'img', 'aria-label':`${data.labels.diagram}. ${data.labels.diagramNote}` });
+      function calculate(config) {
+        const area = Number(config.internalGrossArea);
+        const ratio = Number(config.shellRatio);
+        const wall = Number(config.partitionWallThickness);
+        const hallWidth = Number(config.hallwayClearWidth);
+        const width = Math.sqrt(area * ratio);
+        const height = area / width;
+        const roomOuterWidth = (width - 3 * hallWidth) / 2;
+        const roomOuterHeight = height - 2 * hallWidth;
+        const roomClearWidth = roomOuterWidth - 2 * wall;
+        const roomClearHeight = roomOuterHeight - 2 * wall;
+        const valid = [area,ratio,wall,hallWidth,roomOuterWidth,roomOuterHeight,roomClearWidth,roomClearHeight].every(Number.isFinite) && area > 0 && ratio > 0 && wall > 0 && hallWidth > 0 && roomClearWidth > 0 && roomClearHeight > 0;
+        if (!valid) return { valid:false, area, width, height };
+        const roomOuterArea = roomOuterWidth * roomOuterHeight;
+        const roomClearArea = roomClearWidth * roomClearHeight;
+        const roomsClearArea = roomClearArea * 2;
+        const partitionWallArea = (roomOuterArea - roomClearArea) * 2;
+        const hallwayClearArea = area - roomOuterArea * 2;
+        const allocated = roomsClearArea + partitionWallArea + hallwayClearArea;
+        return {
+          valid:true, area, ratio, wall, hallWidth, width, height,
+          roomOuterWidth, roomOuterHeight, roomClearWidth, roomClearHeight,
+          roomClearArea, roomsClearArea, partitionWallArea, hallwayClearArea,
+          allocated, difference:area-allocated
+        };
+      }
+      function makeDefs(svg, gridSize) {
         const defs = svgAdd(svg, 'defs');
-        const pattern = svgAdd(defs, 'pattern', { id:'grid', width:50, height:50, patternUnits:'userSpaceOnUse' });
-        svgAdd(pattern, 'path', { d:'M 50 0 L 0 0 0 50', class:'grid', fill:'none' });
-        [['player-arrow','#72ddd1'],['staff-arrow','#d0b5f7']].forEach(([id,color]) => {
-          const marker = svgAdd(defs, 'marker', { id, viewBox:'0 0 10 10', refX:8, refY:5, markerWidth:6, markerHeight:6, orient:'auto-start-reverse' });
+        const pattern = svgAdd(defs, 'pattern', { id:'grid', width:gridSize, height:gridSize, patternUnits:'userSpaceOnUse' });
+        svgAdd(pattern, 'path', { d:`M ${gridSize} 0 L 0 0 0 ${gridSize}`, class:'grid-line', fill:'none' });
+        [['arrow-player','#72ddd1'],['arrow-ghost','#ff8fcf']].forEach(([id,color]) => {
+          const marker = svgAdd(defs, 'marker', { id, viewBox:'0 0 10 10', refX:8, refY:5, markerWidth:3.2, markerHeight:3.2, orient:'auto-start-reverse' });
           svgAdd(marker, 'path', { d:'M 0 0 L 10 5 L 0 10 z', fill:color });
         });
-        svgAdd(svg, 'rect', { width:1000, height:710, fill:'url(#grid)' });
-        data.plan.playerRoutes.forEach(route => svgAdd(svg, 'path', { d:route.d, class:'route' }));
-        svgAdd(svg, 'text', { x:500, y:686, class:'route-label' }, data.labels.playerRoute);
-        data.plan.rooms.forEach(room => {
-          svgAdd(svg, 'rect', { x:room.x, y:room.y, width:room.width, height:room.height, rx:room.kind === 'gm' ? 6 : 2, class:`room ${room.kind === 'gm' ? 'gm' : room.kind}` });
-          const centerX = room.x + room.width / 2;
-          const centerY = room.y + room.height / 2;
-          svgAdd(svg, 'text', { x:centerX, y:centerY-4, class:'room-name' }, room.name);
-          svgAdd(svg, 'text', { x:centerX, y:centerY+22, class:'room-note' }, room.note);
-        });
-        data.plan.staffAccess.forEach(access => {
-          svgAdd(svg, 'line', { x1:access.from[0], y1:access.from[1], x2:access.to[0], y2:access.to[1], class:'staff' });
-        });
-        svgAdd(svg, 'text', { x:500, y:330, class:'staff-label' }, data.labels.staffAccess);
-        svgAdd(svg, 'text', { x:500, y:355, class:'draft-note' }, data.labels.diagramNote);
-        return card;
+        const dim = svgAdd(defs, 'marker', { id:'dim-arrow', viewBox:'0 0 10 10', refX:5, refY:5, markerWidth:5, markerHeight:5, orient:'auto-start-reverse' });
+        svgAdd(dim, 'path', { d:'M 10 0 L 0 5 L 10 10', fill:'#ffd591' });
       }
-      function renderMeasuredPlan(parent) {
-        const draft = data.measurementDraft;
-        const geometry = draft.geometry;
-        const scale = 100;
-        const origin = [80,80];
-        const card = add(parent, 'figure', 'plan-card');
-        const head = add(card, 'figcaption', 'plan-head');
-        add(head, 'strong', '', draft.labels.plan);
-        add(head, 'span', '', draft.labels.planNote);
+      function pointToSvg(point, geometry, origin, scale) {
+        return [origin[0] + point.x * geometry.width * scale, origin[1] + point.y * geometry.height * scale];
+      }
+      function renderMarks(svg, draft, geometry, origin, scale) {
+        source.layers.forEach(layer => {
+          if (!state.visible[layer.id]) return;
+          const marks = draft.marks[layer.id] || [];
+          if (layer.mode === 'path') {
+            if (!marks.length) return;
+            const points = marks.map(point => pointToSvg(point, geometry, origin, scale).join(',')).join(' ');
+            svgAdd(svg, 'polyline', { points, class:`mark-path mark-${layer.id}` });
+            if (layer.id === 'ghost' && marks.length) {
+              const first = pointToSvg(marks[0], geometry, origin, scale);
+              const last = pointToSvg(marks[marks.length-1], geometry, origin, scale);
+              svgAdd(svg, 'text', { x:first[0], y:first[1]-70, class:'mark-label', fill:layer.color }, 'IN');
+              svgAdd(svg, 'text', { x:last[0], y:last[1]-70, class:'mark-label', fill:layer.color }, 'OUT');
+            }
+            return;
+          }
+          marks.forEach((mark,index) => {
+            const [x,y] = pointToSvg(mark, geometry, origin, scale);
+            if (layer.id === 'acts') {
+              svgAdd(svg, 'circle', { cx:x, cy:y, r:30, class:'act-circle' });
+              svgAdd(svg, 'text', { x, y, class:'mark-symbol', fill:layer.color }, mark.label || String(index+1));
+            } else {
+              svgAdd(svg, 'text', { x, y, class:'mark-symbol', fill:layer.color }, layer.symbol);
+              if (mark.label) svgAdd(svg, 'text', { x, y:y+80, class:'mark-label', fill:layer.color }, mark.label);
+            }
+          });
+        });
+      }
+      function renderPlan(parent, draft, geometry, rerender) {
+        const card = add(parent, 'div', 'card');
+        const head = add(card, 'div', 'card-head');
+        add(head, 'strong', '', source.ui.plan);
+        add(head, 'span', '', `${fmt(geometry.width)} × ${fmt(geometry.height)} ${source.ui.metres} · ${source.ui.draftOnly}`);
         const wrap = add(card, 'div', 'plan-wrap');
-        const svg = svgAdd(wrap, 'svg', { viewBox:'0 0 1160 760', class:'measured-plan', role:'img', 'aria-label':draft.labels.planAria });
-        const defs = svgAdd(svg, 'defs');
-        const pattern = svgAdd(defs, 'pattern', { id:'measured-grid', width:50, height:50, patternUnits:'userSpaceOnUse' });
-        svgAdd(pattern, 'path', { d:'M 50 0 L 0 0 0 50', class:'grid', fill:'none' });
-        const measureMarker = svgAdd(defs, 'marker', { id:'measure-arrow', viewBox:'0 0 10 10', refX:5, refY:5, markerWidth:5, markerHeight:5, orient:'auto-start-reverse' });
-        svgAdd(measureMarker, 'path', { d:'M 10 0 L 0 5 L 10 10', fill:'#ffd591' });
-        const routeMarker = svgAdd(defs, 'marker', { id:'measured-route-arrow', viewBox:'0 0 10 10', refX:8, refY:5, markerWidth:5, markerHeight:5, orient:'auto' });
-        svgAdd(routeMarker, 'path', { d:'M 0 0 L 10 5 L 0 10 z', fill:'#72ddd1' });
-        svgAdd(svg, 'rect', { width:1160, height:760, fill:'url(#measured-grid)' });
-        const shellWidth = geometry.shell.width * scale;
-        const shellHeight = geometry.shell.height * scale;
-        svgAdd(svg, 'rect', { x:origin[0], y:origin[1], width:shellWidth, height:shellHeight, class:'hall' });
-        geometry.rooms.forEach(room => {
-          const x = origin[0] + room.x * scale;
-          const y = origin[1] + room.y * scale;
-          const width = room.width * scale;
-          const height = room.height * scale;
-          svgAdd(svg, 'rect', { x, y, width, height, class:'measured-room' });
-          svgAdd(svg, 'text', { x:x+width/2, y:y+height/2-20, class:'room-name' }, room.name);
-          svgAdd(svg, 'text', { x:x+width/2, y:y+height/2+12, class:'room-note' }, `${room.width.toFixed(1)} × ${room.height.toFixed(1)} m`);
-          svgAdd(svg, 'text', { x:x+width/2, y:y+height/2+42, class:'area-text' }, `${room.area.toFixed(2)} m²`);
-        });
-        const route = 'M120 640 L120 120 L350 120 Q540 120 540 300 L540 520 Q540 640 350 640 L120 640 M540 300 Q540 120 730 120 L1040 120 L1040 640 L730 640 Q540 640 540 520';
-        svgAdd(svg, 'path', { d:route, class:'route', 'marker-end':'url(#measured-route-arrow)' });
-        function measure(x1,y1,x2,y2,label,textX,textY) {
-          svgAdd(svg, 'line', { x1,y1,x2,y2,class:'measure' });
-          svgAdd(svg, 'text', { x:textX, y:textY, class:'measure-text' }, label);
+        if (!geometry.valid) {
+          add(wrap, 'p', 'check warning', source.ui.invalidGeometry);
+          return;
         }
-        svgAdd(svg, 'line', { x1:80,y1:80,x2:80,y2:38,class:'measure-guide' });
-        svgAdd(svg, 'line', { x1:1080,y1:80,x2:1080,y2:38,class:'measure-guide' });
-        measure(80,42,1080,42,'10,0 m',580,30);
-        svgAdd(svg, 'line', { x1:80,y1:80,x2:38,y2:80,class:'measure-guide' });
-        svgAdd(svg, 'line', { x1:80,y1:680,x2:38,y2:680,class:'measure-guide' });
-        measure(42,80,42,680,'6,0 m',23,386);
-        measure(80,720,160,720,'0,8 m',120,744);
-        measure(540,380,620,380,'0,8 m',580,368);
-        svgAdd(svg, 'text', { x:580, y:720, class:'route-label' }, draft.labels.hallwayTotal);
-        return card;
-      }
-      function renderMeasuredDraft(parent) {
-        const draft = data.measurementDraft;
-        renderMeasuredPlan(parent);
-        const cards = add(parent, 'div', 'area-cards');
-        draft.areaCards.forEach(item => {
-          const card = add(cards, 'div', 'area-card');
-          add(card, 'strong', '', item.label);
-          add(card, 'b', '', item.value);
-          add(card, 'span', '', item.note);
+        const scale = 100;
+        const margin = 360;
+        const origin = [margin,margin];
+        const shellWidth = geometry.width * scale;
+        const shellHeight = geometry.height * scale;
+        const svg = svgAdd(wrap, 'svg', { class:'plan', viewBox:`0 0 ${shellWidth+margin*2} ${shellHeight+margin*2}`, role:'img', 'aria-label':`${source.ui.plan}: ${draft.name}` });
+        makeDefs(svg, 50);
+        svgAdd(svg, 'rect', { width:shellWidth+margin*2, height:shellHeight+margin*2, fill:'url(#grid)' });
+        svgAdd(svg, 'rect', { x:origin[0], y:origin[1], width:shellWidth, height:shellHeight, class:'hall' });
+        const hall = geometry.hallWidth * scale;
+        const wall = geometry.wall * scale;
+        const outerWidth = geometry.roomOuterWidth * scale;
+        const outerHeight = geometry.roomOuterHeight * scale;
+        [origin[0]+hall, origin[0]+hall+outerWidth+hall].forEach((x,index) => {
+          const y = origin[1]+hall;
+          svgAdd(svg, 'rect', { x, y, width:outerWidth, height:outerHeight, class:'wall-fill' });
+          svgAdd(svg, 'rect', { x:x+wall, y:y+wall, width:outerWidth-2*wall, height:outerHeight-2*wall, class:'room-clear' });
+          const cx=x+outerWidth/2, cy=y+outerHeight/2;
+          svgAdd(svg, 'text', { x:cx, y:cy-15, class:'room-name' }, index===0 ? 'ROOM A' : 'ROOM B');
+          svgAdd(svg, 'text', { x:cx, y:cy+30, class:'room-note' }, `${fmt(geometry.roomClearWidth)} × ${fmt(geometry.roomClearHeight)} m`);
         });
-        const report = add(parent, 'section');
-        add(report, 'h2', '', draft.labels.report);
-        draft.report.forEach(item => row(report, item));
-        const calculations = add(parent, 'section');
-        add(calculations, 'h2', '', draft.labels.calculations);
-        draft.calculations.forEach(item => {
-          const line = add(calculations, 'div', 'formula');
-          add(line, 'strong', '', item.keyword);
-          add(line, 'span', '', item.brief);
-          add(line, 'output', '', `${item.value.toFixed(2).replace('.', ',')} m²`);
+        if (state.visible.measurements) {
+          const topY=origin[1]-190;
+          svgAdd(svg, 'line', { x1:origin[0],y1:origin[1],x2:origin[0],y2:topY,class:'dimension-guide' });
+          svgAdd(svg, 'line', { x1:origin[0]+shellWidth,y1:origin[1],x2:origin[0]+shellWidth,y2:topY,class:'dimension-guide' });
+          svgAdd(svg, 'line', { x1:origin[0],y1:topY,x2:origin[0]+shellWidth,y2:topY,class:'dimension' });
+          svgAdd(svg, 'text', { x:origin[0]+shellWidth/2,y:topY-80,class:'dimension-text' }, `${fmt(geometry.width)} m`);
+          const leftX=origin[0]-190;
+          svgAdd(svg, 'line', { x1:origin[0],y1:origin[1],x2:leftX,y2:origin[1],class:'dimension-guide' });
+          svgAdd(svg, 'line', { x1:origin[0],y1:origin[1]+shellHeight,x2:leftX,y2:origin[1]+shellHeight,class:'dimension-guide' });
+          svgAdd(svg, 'line', { x1:leftX,y1:origin[1],x2:leftX,y2:origin[1]+shellHeight,class:'dimension' });
+          svgAdd(svg, 'text', { x:leftX-80,y:origin[1]+shellHeight/2,class:'dimension-text',transform:`rotate(-90 ${leftX-80} ${origin[1]+shellHeight/2})` }, `${fmt(geometry.height)} m`);
+          const bottomY=origin[1]+shellHeight+170;
+          svgAdd(svg, 'line', { x1:origin[0],y1:bottomY,x2:origin[0]+hall,y2:bottomY,class:'dimension' });
+          svgAdd(svg, 'text', { x:origin[0]+hall/2,y:bottomY+110,class:'dimension-text' }, `${fmt(geometry.hallWidth)} m clear`);
+          const centerStart=origin[0]+hall+outerWidth;
+          const centerMeasureY=origin[1]+hall/2;
+          svgAdd(svg, 'line', { x1:centerStart,y1:centerMeasureY,x2:centerStart+hall,y2:centerMeasureY,class:'dimension' });
+          svgAdd(svg, 'text', { x:centerStart+hall/2,y:centerMeasureY-55,class:'dimension-text' }, `${fmt(geometry.hallWidth)} m`);
+        }
+        renderMarks(svg,draft,geometry,origin,scale);
+        svg.addEventListener('click', event => {
+          if (!state.tool) return;
+          const point = svg.createSVGPoint();
+          point.x=event.clientX; point.y=event.clientY;
+          const local=point.matrixTransform(svg.getScreenCTM().inverse());
+          const mark={ x:(local.x-origin[0])/shellWidth, y:(local.y-origin[1])/shellHeight };
+          if (state.tool === 'acts') mark.label=String((draft.marks.acts?.length || 0)+1);
+          if (['puzzle','lighting','vfx','hiddenDoor'].includes(state.tool)) {
+            mark.label=`${state.tool === 'hiddenDoor' ? 'HD' : state.tool.charAt(0).toUpperCase()}${(draft.marks[state.tool]?.length || 0)+1}`;
+          }
+          draft.marks[state.tool] ||= [];
+          draft.marks[state.tool].push(mark);
+          state.history[draft.id].push(state.tool);
+          rerender();
         });
-        add(calculations, 'p', 'check', draft.check);
-        const assumptions = add(parent, 'section');
-        add(assumptions, 'h2', '', draft.labels.assumptions);
-        row(assumptions, { keyword:draft.labels.assumptionKeyword, brief:draft.labels.assumptionBrief, status:'draft', details:draft.assumptions });
-        add(parent, 'footer', '', draft.footer);
       }
-      if (!data) return;
+      function renderSide(parent, draft, rerender) {
+        const side=add(parent,'aside','card side');
+        const layers=add(side,'section');
+        add(layers,'h2','panel-title',source.ui.layers);
+        const list=add(layers,'div','layer-list');
+        source.layers.forEach(layer => {
+          const item=add(list,'label','layer-item');
+          const input=add(item,'input'); input.type='checkbox'; input.checked=state.visible[layer.id];
+          input.addEventListener('change',()=>{state.visible[layer.id]=input.checked; rerender();});
+          const symbol=add(item,'span','symbol',layer.symbol); symbol.style.color=layer.color;
+          add(item,'span','',layer.label);
+        });
+        const tools=add(side,'section');
+        add(tools,'h2','panel-title',source.ui.tools);
+        const grid=add(tools,'div','tool-grid');
+        source.layers.filter(layer => layer.markable !== false).forEach(layer => {
+          const button=add(grid,'button','tool',`${layer.symbol} ${layer.toolLabel}`);
+          button.type='button'; button.setAttribute('aria-pressed',state.tool===layer.id?'true':'false');
+          button.addEventListener('click',()=>{state.tool=state.tool===layer.id?null:layer.id; rerender();});
+        });
+        const actions=add(tools,'div','tool-actions');
+        const stop=add(actions,'button','',source.ui.clearTool); stop.type='button'; stop.addEventListener('click',()=>{state.tool=null;rerender();});
+        const undo=add(actions,'button','',source.ui.undo); undo.type='button'; undo.addEventListener('click',()=>{
+          const layerId=state.history[draft.id].pop();
+          if (layerId && draft.marks[layerId]?.length) draft.marks[layerId].pop();
+          rerender();
+        });
+        const reset=add(actions,'button','',source.ui.reset); reset.type='button'; reset.addEventListener('click',()=>{
+          const original=source.drafts.find(item=>item.id===draft.id);
+          const index=state.drafts.findIndex(item=>item.id===draft.id);
+          state.drafts[index]=clone(original); state.history[draft.id]=[]; state.tool=null; rerender(state.drafts[index]);
+        });
+        add(tools,'p','tool-help',`${source.ui.activeTool}: ${source.layers.find(layer=>layer.id===state.tool)?.label || source.ui.noTool}. ${source.ui.clickHelp}`);
+      }
+      function renderConfig(parent,draft,geometry,rerender) {
+        add(parent,'h2','panel-title',source.ui.config);
+        const grid=add(parent,'div','config-grid');
+        const fields=[
+          ['internalGrossArea',source.ui.grossArea,1],
+          ['shellRatio',source.ui.ratio,0.01],
+          ['partitionWallThickness',source.ui.wallThickness,0.01],
+          ['hallwayClearWidth',source.ui.hallwayWidth,0.05]
+        ];
+        fields.forEach(([key,label,step])=>{
+          const field=add(grid,'label','config-field');
+          add(field,'span','',label);
+          const input=add(field,'input'); input.type='number'; input.min=step; input.step=step; input.value=draft.config[key];
+          input.addEventListener('change',()=>{draft.config[key]=Number(input.value);rerender();});
+        });
+        [[source.ui.roomCount,String(draft.config.roomCount)],[source.ui.circulation,draft.config.circulation],[source.ui.shell,geometry.valid?`${fmt(geometry.width)} × ${fmt(geometry.height)} m`:'—']].forEach(([label,value])=>{
+          const field=add(grid,'div','config-value'); add(field,'span','',label); add(field,'b','',value);
+        });
+        add(parent,'p','basis',`${source.ui.grossArea}: ${source.ui.internalGrossDefinition}`);
+      }
+      function renderReport(parent,draft,geometry) {
+        if (!geometry.valid) return;
+        const cards=add(parent,'div','area-cards');
+        [
+          [source.ui.hall,geometry.hallwayClearArea,geometry.hallwayClearArea/geometry.area*100],
+          [source.ui.rooms,geometry.roomsClearArea,geometry.roomsClearArea/geometry.area*100],
+          [source.ui.walls,geometry.partitionWallArea,geometry.partitionWallArea/geometry.area*100],
+          [source.ui.total,geometry.allocated,geometry.allocated/geometry.area*100]
+        ].forEach(([label,value,share])=>{
+          const card=add(cards,'div','area-card'); add(card,'strong','',label); add(card,'b','',`${fmt(value)} m²`); add(card,'span','',`${fmt(share)}%`);
+        });
+        const report=add(parent,'div','report-grid');
+        const formulas=add(report,'section','section'); add(formulas,'h2','',source.ui.areaReport);
+        [
+          [source.ui.roomA,`${fmt(geometry.roomClearWidth)} × ${fmt(geometry.roomClearHeight)}`,geometry.roomClearArea],
+          [source.ui.roomB,`${fmt(geometry.roomClearWidth)} × ${fmt(geometry.roomClearHeight)}`,geometry.roomClearArea],
+          [source.ui.walls,`2 × (${fmt(geometry.roomOuterWidth*geometry.roomOuterHeight)} − ${fmt(geometry.roomClearArea)})`,geometry.partitionWallArea],
+          [source.ui.hall,`${fmt(geometry.area)} − 2 × ${fmt(geometry.roomOuterWidth*geometry.roomOuterHeight)}`,geometry.hallwayClearArea],
+          [source.ui.total,`${fmt(geometry.roomsClearArea)} + ${fmt(geometry.partitionWallArea)} + ${fmt(geometry.hallwayClearArea)}`,geometry.allocated]
+        ].forEach(([label,formula,value])=>{
+          const line=add(formulas,'div','formula'); add(line,'strong','',label); add(line,'span','',formula); add(line,'output','',`${fmt(value)} m²`);
+        });
+        const checks=add(report,'section','section'); add(checks,'h2','',source.ui.validation);
+        const balanced=Math.abs(geometry.difference)<0.005;
+        add(checks,'p',`check${balanced?'':' warning'}`,balanced?source.ui.allChecksPass:`${source.ui.areaMismatch} ${source.ui.difference}: ${fmt(geometry.difference,4)} m²`);
+        add(checks,'p','check warning',source.ui.narrowNotice);
+        const assumptions=add(checks,'div');
+        row(assumptions,{keyword:source.ui.assumptions,brief:String(draft.assumptions.length),status:'draft',details:draft.assumptions});
+      }
+      function renderDraft(panel,draftId) {
+        let draft=state.drafts.find(item=>item.id===draftId);
+        panel.replaceChildren();
+        const rerender=replacement=>{ if(replacement) draft=replacement; renderDraft(panel,draft.id); };
+        const head=add(panel,'div','draft-head');
+        const copy=add(head,'div'); add(copy,'h2','',`${draft.keyword} · ${draft.name}`); add(copy,'p','',draft.brief);
+        const meta=add(head,'div','draft-meta');
+        add(meta,'div','',`${source.ui.draftPrefix} · ${draft.status}`);
+        add(meta,'div','',`${source.ui.directLink}: #draft-${draft.id}`);
+        if(draft.parentId) add(meta,'div','',`Parent: ${draft.parentId}`);
+        const geometry=calculate(draft.config);
+        renderConfig(panel,draft,geometry,rerender);
+        const workspace=add(panel,'div','workspace');
+        renderPlan(workspace,draft,geometry,rerender);
+        renderSide(workspace,draft,rerender);
+        renderReport(panel,draft,geometry);
+      }
+
       root.replaceChildren();
-      const eyebrow = add(root, 'div', 'eyebrow');
-      const title = add(root, 'h1');
-      const titleMain = add(title, 'span');
-      const titleAccent = add(title, 'em');
-      const subtitle = add(root, 'p', 'subtitle');
-      const version = add(root, 'p', 'version');
-      const notice = add(root, 'p', 'notice');
-      const legend = add(root, 'div', 'legend');
-      Object.entries(data.statusLegend).forEach(([status,label]) => {
-        const item = add(legend, 'span');
-        add(item, 'i', `dot ${status}`);
-        add(item, 'span', '', label);
+      add(root,'div','eyebrow',source.eyebrow);
+      const heading=add(root,'h1'); heading.append(document.createTextNode(`${source.heading[0]} `)); add(heading,'em','',source.heading[1]);
+      add(root,'p','intro',source.intro);
+      const legend=add(root,'div','legend');
+      Object.entries(source.statusLegend).forEach(([status,label])=>{const item=add(legend,'span','legend-item');const dot=add(item,'span','status-dot');dot.dataset.status=status;add(item,'span','',label);});
+      const tabs=add(root,'nav','tabs'); tabs.setAttribute('role','tablist');
+      const panels=new Map(),buttons=new Map();
+      const tabSpecs=[
+        {id:'rules',label:source.ui.rulesTab},
+        {id:'terms',label:source.ui.termsTab},
+        ...source.drafts.map(draft=>({id:`draft-${draft.id}`,label:`${source.ui.draftPrefix} ${draft.keyword}`}))
+      ];
+      tabSpecs.forEach(spec=>{
+        const button=add(tabs,'button','tab',spec.label); button.type='button'; button.id=`tab-${spec.id}`; button.setAttribute('role','tab'); button.setAttribute('aria-controls',`panel-${spec.id}`); button.addEventListener('click',()=>{location.hash=spec.id;}); buttons.set(spec.id,button);
+        const panel=add(root,'section','tab-panel'); panel.id=`panel-${spec.id}`; panel.setAttribute('role','tabpanel'); panel.setAttribute('aria-labelledby',button.id); panels.set(spec.id,panel);
       });
-      const tabs = add(root, 'nav', 'tabs');
-      tabs.setAttribute('aria-label', data.labels.tabs);
-      tabs.setAttribute('role', 'tablist');
-      const panels = new Map();
-      const buttons = new Map();
-      data.tabs.forEach(item => {
-        const button = add(tabs, 'button', 'tab', item.label);
-        button.type = 'button';
-        button.id = `tab-${item.id}`;
-        button.setAttribute('role', 'tab');
-        button.setAttribute('aria-controls', `panel-${item.id}`);
-        button.addEventListener('click', () => { location.hash = item.id; });
-        buttons.set(item.id, button);
-        const panel = add(root, 'div', 'tab-panel');
-        panel.id = `panel-${item.id}`;
-        panel.setAttribute('role', 'tabpanel');
-        panel.setAttribute('aria-labelledby', button.id);
-        panels.set(item.id, panel);
-      });
-      const summaryPanel = panels.get('summary');
-      const feature = add(summaryPanel, 'section', 'feature');
-      row(feature, data.feature);
-      renderPlan(summaryPanel);
-      data.sections.forEach(section => {
-        const group = add(summaryPanel, 'section');
-        add(group, 'h2', '', section.title);
-        section.rows.forEach(item => row(group, item));
-      });
-      add(summaryPanel, 'footer', '', data.footer);
-      renderMeasuredDraft(panels.get('measured-draft'));
+      const rulesPanel=panels.get('rules');
+      source.rules.forEach(section=>{const group=add(rulesPanel,'section','section');group.dataset.colorPreset=section.colorPreset;add(group,'h2','',section.title);section.rows.forEach(item=>row(group,item));});
+      add(rulesPanel,'p','foot',source.ui.draftOnly);
+      const termsPanel=panels.get('terms');
+      const termSection=add(termsPanel,'section','section'); termSection.dataset.colorPreset='cyan'; add(termSection,'h2','',source.ui.termsTab); source.terms.forEach(item=>row(termSection,item));
+      const symbolSection=add(termsPanel,'section','section'); symbolSection.dataset.colorPreset='orange'; add(symbolSection,'h2','',source.ui.layers); source.layers.forEach(layer=>row(symbolSection,{keyword:`${layer.symbol} ${layer.label}`,brief:layer.toolLabel,status:'stable'}));
       function selectTab() {
-        const requested = location.hash.slice(1);
-        const active = panels.has(requested) ? requested : 'summary';
-        panels.forEach((panel,id) => { panel.hidden = id !== active; });
-        buttons.forEach((button,id) => {
-          button.setAttribute('aria-selected', id === active ? 'true' : 'false');
-          button.tabIndex = id === active ? 0 : -1;
-        });
-        const view = active === 'measured-draft' ? data.measurementDraft : data;
-        eyebrow.textContent = view.eyebrow;
-        titleMain.textContent = view.heading[0];
-        titleAccent.textContent = view.heading[1];
-        subtitle.textContent = view.subtitle;
-        version.textContent = `${data.version} · ${active === 'measured-draft' ? data.measurementDraft.labels.version : data.labels.summaryVersion}`;
-        notice.textContent = view.notice;
-        document.title = active === 'measured-draft' ? view.title : data.title;
+        const requested=location.hash.slice(1);
+        const active=panels.has(requested)?requested:'rules';
+        panels.forEach((panel,id)=>{panel.hidden=id!==active;});
+        buttons.forEach((button,id)=>{button.setAttribute('aria-selected',id===active?'true':'false');button.tabIndex=id===active?0:-1;});
+        if(active.startsWith('draft-')) renderDraft(panels.get(active),active.slice(6));
       }
-      window.addEventListener('hashchange', selectTab);
+      window.addEventListener('hashchange',selectTab);
       selectTab();
     })();
   </script>
